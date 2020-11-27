@@ -10,5 +10,5 @@
      steps:
        - checkout
        - run: 
-          cd src
+          cd src \
           dotnet build
