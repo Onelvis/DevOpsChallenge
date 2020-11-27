@@ -9,6 +9,7 @@
     
      steps:
        - checkout
-       - run: cd src
-       - run: Get-Location
-       - run: dotnet build
+       - run: 
+          name: Building project
+          working_directory: src
+          command: dotnet build
