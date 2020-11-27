@@ -9,4 +9,5 @@
     
      steps:
        - checkout
-       - run: cd src && dotnet build
+       - run: cd src
+       - run: dotnet build
