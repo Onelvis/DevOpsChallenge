@@ -9,5 +9,6 @@
     
      steps:
        - checkout
+       - run: cd src
        - run: Get-Location
        - run: dotnet build
