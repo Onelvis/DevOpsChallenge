@@ -39,8 +39,8 @@ jobs:
       - run:
           name: terraform
           command: |
-            ls
-           # terraform apply -auto-approve tfapply
+            cd terraform
+            terraform apply -auto-approve tfapply
       - persist_to_workspace:
           root: .
           paths:
