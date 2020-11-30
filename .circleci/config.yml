@@ -14,7 +14,7 @@ jobs:
           working_directory: src
           command: dotnet build
   plan-apply:
-    working_directory: ~/project/terraform
+    working_directory: ~/project
     docker:
       - image: hashicorp/terraform:light
     steps:
@@ -25,7 +25,7 @@ jobs:
             cd terraform
             ls
             terraform init -input=false
-            terraform plan -out tfapply -var-file variables.tfvars
+            terraform plan -out tfapply
       - persist_to_workspace:
           root: .
           paths:
