@@ -1,62 +1,70 @@
 version: 2.1
 
 orbs:
-  win: circleci/windows@2.2.0
+  win: circleci/windows@2.4.0
 
 jobs:
+
   build:
     executor: win/default
-
     steps:
       - checkout
       - run:
           name: Building project
           working_directory: src
           command: dotnet build
-  plan-apply:
-    working_directory: ~/project
-    docker:
-      - image: hashicorp/terraform:light
+
+  run-tests:
+    executor: win/default
     steps:
       - checkout
       - run:
-          name: terraform init & plan
-          command: |
-            cd terraform
-            ls
-            terraform init -input=false
-            terraform plan -out tfapply
-      - persist_to_workspace:
-          root: .
-          paths:
-            - .
-  apply:
-    docker:
-      - image: hashicorp/terraform:light
-    steps:
-      - attach_workspace:
-          at: .
-      - run:
-          name: terraform
-          command: |
-            cd terraform
-            terraform apply -auto-approve tfapply
-      - persist_to_workspace:
-          root: .
-          paths:
-            - .
+          name: Building project
+          working_directory: src
+          command: dotnet build
 
+
+
+#  plan-apply:
+#    working_directory: ~/project
+#    docker:
+#      - image: hashicorp/terraform:light
+#    steps:
+#      - checkout
+#      - run:
+#          name: terraform init & plan
+#          command: |
+#            cd terraform
+#            ls
+#            terraform init -input=false
+#            terraform plan -out tfapply
+#      - persist_to_workspace:
+#          root: .
+#          paths:
+#            - .
+#  apply:
+#    docker:
+#      - image: hashicorp/terraform:light
+#    steps:
+#      - attach_workspace:
+#          at: .
+#      - run:
+#          name: terraform
+#          command: |
+#            cd terraform
+#            terraform apply -auto-approve tfapply
+#      - persist_to_workspace:
+#          root: .
+#          paths:
+#            - .
+#
 
 workflows:
   version: 2
   plan_approve_apply:
     jobs:
-      - plan-apply
-      - hold-apply:
-          type: approval
+      - build
+      - run-tests:
           requires:
-            - plan-apply
-      - apply:
-          requires:
-           - hold-apply
+            - build
 
