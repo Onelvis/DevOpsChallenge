@@ -15,9 +15,9 @@ jobs:
           command: dotnet build
       - run: get-location
       - persist_to_workspace:
-          root: /project
+          root: .
           paths:
-            - project
+            - .
 
   run-tests:
     executor: win/default
@@ -25,7 +25,7 @@ jobs:
       - run:
           name: Building project
           working_directory: src
-          command: dir
+          command: get-location
 
 
 
