@@ -13,8 +13,9 @@ jobs:
           name: Building project
           working_directory: src
           command: dotnet build
+      - run: dir
       - persist_to_workspace:
-          root: /root
+          root: /project
           paths:
             - project
 
