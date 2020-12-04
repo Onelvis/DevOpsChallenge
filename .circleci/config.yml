@@ -17,7 +17,6 @@ jobs:
           root: .
           paths:
             - .
-
   terraform-plan:
     working_directory: ~/project
     docker:
@@ -57,7 +56,6 @@ workflows:
     jobs:
       - build
       - terraform-plan:
-            type: approval
             requires:
             - build
       - terraform-apply:
