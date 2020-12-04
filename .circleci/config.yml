@@ -17,16 +17,19 @@ jobs:
           root: .
           paths:
             - .
+
   terraform-plan:
     working_directory: ~/project
     docker:
       - image: hashicorp/terraform:light
     steps:
+      - attach_workspace:
+          at: .
       - run:
           name: terraform init & plan
           command: |
-            ls
             cd terraform
+            ls
             terraform init -input=false
             terraform plan -out tfapply
       - persist_to_workspace:
@@ -56,10 +59,10 @@ workflows:
     jobs:
       - build
       - terraform-plan:
+            type: approval
             requires:
             - build
       - terraform-apply:
-          type: approval
           requires:
             - terraform-plan
 
