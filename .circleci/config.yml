@@ -59,7 +59,6 @@ workflows:
     jobs:
       - build
       - terraform-plan:
-            type: approval
             requires:
             - build
       - terraform-apply:
