@@ -13,6 +13,10 @@ jobs:
           name: Building project
           working_directory: src
           command: dotnet build
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .
 
   run-tests:
     executor: win/default
