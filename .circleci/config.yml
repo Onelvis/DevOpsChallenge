@@ -13,7 +13,7 @@ jobs:
           name: Building project
           working_directory: src
           command: dotnet build
-      - run: dir
+      - run: get-location
       - persist_to_workspace:
           root: /project
           paths:
