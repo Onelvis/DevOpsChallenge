@@ -16,7 +16,9 @@ jobs:
       - run:
           name: Install database
           working_directory: src
-          command: dir
+          command: |
+            cd ..
+            db.ps1
       - run: 
           name: Run tests
           working_directory: src
