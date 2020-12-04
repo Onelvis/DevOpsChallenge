@@ -15,8 +15,8 @@ jobs:
           command: dotnet build
       - run:
           name: Install database
-          working_directory: src
-          command: get-location
+          working_directory: project
+          command: dir
       - run: 
           name: Run tests
           working_directory: src
