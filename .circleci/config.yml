@@ -12,63 +12,60 @@ jobs:
       - run:
           name: Building project
           working_directory: src
-          command: echo build
-      - run: get-location
+          command: dotnet build
+      - run: 
+          name: Run tests
+          working_directory: src
+          command: dotnet test          
       - persist_to_workspace:
           root: .
           paths:
             - .
 
-  run-tests:
-    executor: win/default
+  terraform-plan:
+    working_directory: ~/project
+    docker:
+      - image: hashicorp/terraform:light
     steps:
+      - checkout
       - run:
-          name: Building project
-          working_directory: src
-          command: dir
+          name: terraform init & plan
+          command: |
+            cd terraform
+            ls
+            terraform init -input=false
+            terraform plan -out tfapply
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .
+  terraform-apply:
+    docker:
+      - image: hashicorp/terraform:light
+    steps:
+      - attach_workspace:
+          at: .
+      - run:
+          name: terraform
+          command: |
+            cd terraform
+            terraform apply -auto-approve tfapply
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .
 
-
-
-#  plan-apply:
-#    working_directory: ~/project
-#    docker:
-#      - image: hashicorp/terraform:light
-#    steps:
-#      - checkout
-#      - run:
-#          name: terraform init & plan
-#          command: |
-#            cd terraform
-#            ls
-#            terraform init -input=false
-#            terraform plan -out tfapply
-#      - persist_to_workspace:
-#          root: .
-#          paths:
-#            - .
-#  apply:
-#    docker:
-#      - image: hashicorp/terraform:light
-#    steps:
-#      - attach_workspace:
-#          at: .
-#      - run:
-#          name: terraform
-#          command: |
-#            cd terraform
-#            terraform apply -auto-approve tfapply
-#      - persist_to_workspace:
-#          root: .
-#          paths:
-#            - .
-#
 
 workflows:
   version: 2
   plan_approve_apply:
     jobs:
       - build
-      - run-tests:
-          requires:
+      - terraform-plan:
+            type: approval
+            requires:
             - build
+      - terraform-apply:
+          requires:
+            - terraform-plan
 
