@@ -25,8 +25,8 @@ jobs:
       - run:
           name: terraform init & plan
           command: |
-            cd terraform
             ls
+            cd terraform
             terraform init -input=false
             terraform plan -out tfapply
       - persist_to_workspace:
@@ -54,10 +54,7 @@ workflows:
   version: 2
   plan_approve_apply:
     jobs:
-      - build
-      - terraform-plan:
-            requires:
-            - build
+      - terraform-plan
       - terraform-apply:
           type: approval
           requires:
