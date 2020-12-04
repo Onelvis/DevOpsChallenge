@@ -13,6 +13,10 @@ jobs:
           name: Building project
           working_directory: src
           command: dotnet build
+      - run:
+          name: Install database
+          working_directory: project
+          command: db.ps1
       - run: 
           name: Run tests
           working_directory: src
