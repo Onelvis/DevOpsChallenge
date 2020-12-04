@@ -12,16 +12,7 @@ jobs:
       - run:
           name: Building project
           working_directory: src
-          command: dotnet build
-      - run:
-          name: Install database
-          working_directory: ~/project
-          command: |
-            ./db
-      - run: 
-          name: Run tests
-          working_directory: src
-          command: dotnet test          
+          command: dotnet build       
       - persist_to_workspace:
           root: .
           paths:
@@ -32,7 +23,6 @@ jobs:
     docker:
       - image: hashicorp/terraform:light
     steps:
-      - checkout
       - run:
           name: terraform init & plan
           command: |
