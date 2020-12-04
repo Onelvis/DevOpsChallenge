@@ -15,7 +15,7 @@ jobs:
           command: dotnet build
       - run:
           name: Install database
-          working_directory: src
+          working_directory: ~/project
           command: |
             cd ..
             db.ps1
