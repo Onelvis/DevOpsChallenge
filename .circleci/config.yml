@@ -17,8 +17,7 @@ jobs:
           name: Install database
           working_directory: ~/project
           command: |
-            dir
-            db.ps1
+            ./db
       - run: 
           name: Run tests
           working_directory: src
